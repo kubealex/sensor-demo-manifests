@@ -1,0 +1,39 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: test-run
+  namespace: iot-quarkus
+spec:
+  params:
+    - name: APP_NAME
+      value: sensor-simulator
+    - name: GIT_REPO
+      value: https://github.com/kubealex/sensor-simulator.git
+    - name: GIT_REVISION
+      value: main
+    - name: IMAGE_NAME
+      value: Change Me
+    - name: PATH_CONTEXT
+      value: .
+    - name: VERSION
+      value: openjdk-11-ubi8
+    - name: BUILD_APP_IMAGE
+      value: quay.io/kubealex/iot-sensor-simulator
+    - name: BUILD_DOCKERFILE_PATH
+      value: ./src/main/docker/Dockerfile.jvm
+    - name: BUILD_CONTEXT
+      value: .
+    - name: BUILD_TLSVERIFY
+      value: true
+  resources: []
+  pipelineRef:
+    name: iot-sensor-build
+  workspaces:
+    - name: build-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteMany
+          resources:
+            requests:
+              storage: 1Gi
