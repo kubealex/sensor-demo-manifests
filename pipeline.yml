@@ -9,6 +9,7 @@ spec:
       type: string
     - name: GIT_REVISION
       type: string
+      default: main
     - default: package
       name: GOALS
       type: string
